@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# f1qxzz — Portfolio
+
+Personal portfolio website built with Next.js 16, Tailwind CSS v4, and Framer Motion.
+
+## Tech Stack
+
+- **Framework:** Next.js 16.2.6 (App Router)
+- **Styling:** Tailwind CSS v4
+- **Animation:** Framer Motion 12.40
+- **Authentication:** NextAuth v5 (Google & GitHub OAuth)
+- **Font:** Plus Jakarta Sans
+- **Deployment:** Vercel
+
+## Features
+
+- Animated hero section with terminal typing effect and custom cursor
+- Skills showcase with marquee animation
+- Project gallery with certificate displays
+- Contact form
+- Blog-style comments with OAuth authentication
+- Responsive design with dark theme
+- Scroll progress indicator
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+AUTH_GOOGLE_ID=
+AUTH_GOOGLE_SECRET=
+AUTH_GITHUB_ID=
+AUTH_GITHUB_SECRET=
+AUTH_SECRET=
+KV_URL=
+KV_REST_API_URL=
+KV_REST_API_TOKEN=
+KV_API_URL=
+```
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Push to main branch — auto-deploys on Vercel.
