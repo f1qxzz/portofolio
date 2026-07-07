@@ -1,26 +1,34 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import SessionProvider from "@/components/SessionProvider";
+import { LanguageProvider } from "@/lib/LanguageContext";
 
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-jakarta",
 });
 
 export const metadata: Metadata = {
-  title: "f1qxzz | Fullstack Developer",
+  title: "Portfolio | Fullstack Developer",
   description:
-    "Fullstack Developer focused on modern web applications with React, Next.js, and Laravel.",
-  icons: { icon: "/favicon.ico" },
+    "Website portofolio personal Fullstack Developer yang colorful dan interaktif.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en" className={`${plusJakarta.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="id" className={jakarta.variable} suppressHydrationWarning>
+      <body className="antialiased" suppressHydrationWarning>
+        <SessionProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </SessionProvider>
+      </body>
     </html>
   );
 }

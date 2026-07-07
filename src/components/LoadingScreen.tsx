@@ -1,230 +1,170 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { GithubIcon, InstagramIcon, DiscordIcon, TelegramIcon } from "./SocialIcons";
 
-const socials = [
-  { label: "GitHub", href: "https://github.com/f1qxzz" },
-  { label: "Discord", href: "https://discord.gg/M9J3ZPt7" },
-  { label: "Instagram", href: "https://instagram.com/f1qxzz_" },
-  { label: "Telegram", href: "https://t.me/f1qxzz" },
+const particles = [
+  { left: 8, top: 12, size: 3, dur: 5, delay: 0, glow: 6 },
+  { left: 92, top: 18, size: 4, dur: 6, delay: 0.5, glow: 8 },
+  { left: 15, top: 75, size: 2, dur: 4, delay: 1, glow: 5 },
+  { left: 85, top: 80, size: 3, dur: 5.5, delay: 0.3, glow: 6 },
+  { left: 5, top: 45, size: 2.5, dur: 7, delay: 1.5, glow: 5 },
+  { left: 95, top: 50, size: 3.5, dur: 6.5, delay: 0.8, glow: 7 },
+  { left: 30, top: 8, size: 2, dur: 5, delay: 2, glow: 5 },
+  { left: 70, top: 90, size: 3, dur: 4.5, delay: 1.2, glow: 6 },
+  { left: 20, top: 60, size: 2.5, dur: 6, delay: 0.7, glow: 5 },
+  { left: 80, top: 30, size: 4, dur: 5.5, delay: 1.8, glow: 8 },
+  { left: 50, top: 5, size: 2, dur: 7, delay: 0.4, glow: 5 },
+  { left: 50, top: 95, size: 3, dur: 5, delay: 1.1, glow: 6 },
+  { left: 10, top: 35, size: 2.5, dur: 6, delay: 0.9, glow: 5 },
+  { left: 88, top: 65, size: 3.5, dur: 4.5, delay: 1.4, glow: 7 },
+  { left: 40, top: 20, size: 2, dur: 5.5, delay: 2.2, glow: 5 },
+  { left: 60, top: 85, size: 3, dur: 6, delay: 0.6, glow: 6 },
+  { left: 25, top: 40, size: 2.5, dur: 5, delay: 1.7, glow: 5 },
+  { left: 75, top: 15, size: 2, dur: 6.5, delay: 0.2, glow: 5 },
+  { left: 45, top: 55, size: 3.5, dur: 5, delay: 1.3, glow: 7 },
+  { left: 55, top: 70, size: 2, dur: 4.5, delay: 2.5, glow: 5 },
 ];
 
-const particles = Array.from({ length: 18 }, (_, i) => ({
-  id: i,
-  size: Math.random() * 3 + 2,
-  top: Math.random() * 100,
-  left: Math.random() * 100,
-  delay: Math.random() * 4,
-  duration: 4 + Math.random() * 3,
-  color: Math.random() > 0.5 ? "#22d3ee" : "#a78bfa",
-}));
-
 export default function LoadingScreen() {
+  const [isVisible, setIsVisible] = useState(true);
+  const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
-  const [done, setDone] = useState(false);
+
+  const loadingText = useMemo(() => {
+    if (progress < 20) return "Initializing...";
+    if (progress < 40) return "Loading assets...";
+    if (progress < 60) return "Preparing...";
+    if (progress < 80) return "Almost ready...";
+    return "Welcome!";
+  }, [progress]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setProgress((p) => {
-        if (p >= 100) {
+      setProgress((prev) => {
+        const next = prev + Math.random() * 2 + 0.5;
+        if (next >= 100) {
           clearInterval(interval);
-          setTimeout(() => setDone(true), 400);
+          setTimeout(() => setIsVisible(false), 1000);
           return 100;
         }
-        return p + Math.random() * 12 + 3;
+        return next;
       });
-    }, 150);
+    }, 80);
     return () => clearInterval(interval);
   }, []);
 
-  if (done) return null;
-
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 99999,
-        background: "#06080f",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        transition: "opacity 0.4s ease",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "conic-gradient(from 0deg, transparent, rgba(167,139,250,0.04), transparent, rgba(34,211,238,0.04), transparent)",
-          animation: "spin-slow 8s linear infinite",
-        }}
-      />
-      {particles.map((p) => (
-        <div
-          key={p.id}
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
           style={{
-            position: "absolute",
-            width: p.size,
-            height: p.size,
-            top: `${p.top}%`,
-            left: `${p.left}%`,
-            background: p.color,
-            borderRadius: "50%",
-            opacity: 0.3,
-            animation: `float ${p.duration}s ease-in-out ${p.delay}s infinite`,
-          }}
-        />
-      ))}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 24,
-          zIndex: 1,
-        }}
-      >
-        <div style={{ position: "relative", width: 120, height: 120 }}>
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, #0ea5e9, #8b5cf6)",
-              boxShadow: "0 0 60px rgba(139,92,246,0.3)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <svg width="56" height="56" viewBox="0 0 56 56">
-              <ellipse cx="20" cy="24" rx="3" ry="4" fill="white" />
-              <ellipse cx="36" cy="24" rx="3" ry="4" fill="white" />
-              <ellipse cx="20" cy="24" rx="2" ry="1.5" fill="#22d3ee">
-                <animate attributeName="ry" values="1.5;0.1;1.5" dur="3s" repeatCount="indefinite" />
-              </ellipse>
-              <ellipse cx="36" cy="24" rx="2" ry="1.5" fill="#22d3ee">
-                <animate attributeName="ry" values="1.5;0.1;1.5" dur="3s" repeatCount="indefinite" />
-              </ellipse>
-              <path d="M18 36 Q28 44, 38 36" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" />
-              <circle cx="14" cy="14" r="2" fill="#22d3ee" opacity="0.5">
-                <animate attributeName="r" values="2;6;2" dur="2s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite" />
-              </circle>
-            </svg>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              inset: -8,
-              borderRadius: "50%",
-              border: "2px solid transparent",
-              borderTopColor: "#22d3ee",
-              borderRightColor: "#8b5cf6",
-              animation: "orbit 6s linear infinite",
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                top: -4,
-                right: 20,
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "#22d3ee",
-                boxShadow: "0 0 10px #22d3ee",
-              }}
-            />
-          </div>
-        </div>
-        <div style={{ textAlign: "center" }}>
-          <h1
-            style={{
-              fontSize: "clamp(36px, 8vw, 64px)",
-              fontWeight: 900,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-            }}
-          >
-            F1<span style={{ color: "#06b6d4" }}>Q</span>XZZ
-          </h1>
-          <p
-            style={{
-              fontSize: 14,
-              fontFamily: "var(--font-mono), monospace",
-              color: "rgba(255,255,255,0.3)",
-              marginTop: 8,
-            }}
-          >
-            code. build. innovate.
-          </p>
-        </div>
-        <div style={{ display: "flex", gap: 12 }}>
-          {socials.map((s) => (
-            <a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                width: 44,
-                height: 44,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 10,
-                border: "1px solid rgba(255,255,255,0.1)",
-                fontSize: 12,
-                color: "rgba(255,255,255,0.5)",
-                textDecoration: "none",
-                transition: "all 0.3s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#a78bfa";
-                e.currentTarget.style.color = "#a78bfa";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
-                e.currentTarget.style.color = "rgba(255,255,255,0.5)";
-              }}
-            >
-              {s.label[0]}
-            </a>
-          ))}
-        </div>
-        <div
-          style={{
-            width: 300,
-            height: 3,
-            borderRadius: 2,
-            background: "rgba(255,255,255,0.05)",
+            position: "fixed",
+            inset: 0,
+            zIndex: 99999,
+            background: "#06080f",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
             overflow: "hidden",
           }}
         >
-          <div
-            style={{
-              width: `${Math.min(progress, 100)}%`,
-              height: "100%",
-              background: "linear-gradient(90deg, #06b6d4, #8b5cf6)",
-              borderRadius: 2,
-              transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-            }}
-          />
-        </div>
-        <p
-          style={{
-            fontSize: 12,
-            color: "rgba(255,255,255,0.2)",
-            fontFamily: "var(--font-mono), monospace",
-          }}
-        >
-          Initializing... {Math.floor(Math.min(progress, 100))}%
-        </p>
-      </div>
-    </div>
+          {/* Background */}
+          <div style={{ position: "absolute", inset: 0 }}>
+            {/* Rotating gradient */}
+            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 600, height: 600, borderRadius: "50%", background: "conic-gradient(from 0deg, transparent, rgba(6,182,212,0.08), transparent, rgba(139,92,246,0.08), transparent)", animation: "spin 8s linear infinite" }} />
+
+            {/* Spotlight beams */}
+            {[0, 30, -30].map((rotate, i) => (
+              <div key={i} style={{ position: "absolute", top: "-10%", left: "50%", transform: `translateX(-50%) rotate(${rotate}deg)`, width: 80, height: "120%", background: `linear-gradient(to bottom, rgba(6,182,212,${0.08 - i * 0.02}), transparent 70%)`, filter: "blur(20px)", transformOrigin: "top center" }} />
+            ))}
+
+            {/* Particles */}
+            {particles.map((p, i) => (
+              <div key={i} style={{ position: "absolute", left: `${p.left}%`, top: `${p.top}%`, width: p.size, height: p.size, borderRadius: "50%", background: i % 2 === 0 ? "rgba(6,182,212,0.4)" : "rgba(139,92,246,0.4)", animation: `float ${p.dur}s ease-in-out ${p.delay}s infinite`, boxShadow: `0 0 ${p.glow}px ${i % 2 === 0 ? "rgba(6,182,212,0.3)" : "rgba(139,92,246,0.3)"}` }} />
+            ))}
+
+            {/* Grid */}
+            <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(6,182,212,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.02) 1px, transparent 1px)", backgroundSize: "60px 60px", maskImage: "radial-gradient(ellipse at center, black 10%, transparent 60%)", WebkitMaskImage: "radial-gradient(ellipse at center, black 10%, transparent 60%)" }} />
+          </div>
+
+          {/* Main Content */}
+          <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+            {/* Glowing Orb */}
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{ position: "relative", width: 120, height: 120, marginBottom: 16 }}
+            >
+              {/* Outer glow */}
+              <div style={{ position: "absolute", inset: -20, borderRadius: "50%", background: "radial-gradient(circle, rgba(6,182,212,0.3) 0%, transparent 70%)", animation: "pulse 3s ease-in-out infinite" }} />
+
+              {/* Orb body */}
+              <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "linear-gradient(135deg, #0ea5e9, #8b5cf6)", boxShadow: "0 0 40px rgba(6,182,212,0.4), inset 0 -5px 15px rgba(0,0,0,0.3), inset 0 5px 15px rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+                {/* Shine */}
+                <div style={{ position: "absolute", top: 10, left: 20, width: 30, height: 15, borderRadius: "50%", background: "rgba(255,255,255,0.3)", filter: "blur(5px)", transform: "rotate(-30deg)" }} />
+
+                {/* Face */}
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                  <ellipse cx="20" cy="24" rx="5" ry="6" fill="white" opacity="0.9">
+                    <animate attributeName="ry" values="6;1;6" dur="3s" repeatCount="indefinite" />
+                  </ellipse>
+                  <ellipse cx="40" cy="24" rx="5" ry="6" fill="white" opacity="0.9">
+                    <animate attributeName="ry" values="6;1;6" dur="3s" repeatCount="indefinite" begin="0.1s" />
+                  </ellipse>
+                  <path d="M 18 36 Q 30 46 42 36" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" opacity="0.9" />
+                </svg>
+              </div>
+
+              {/* Orbiting ring */}
+              <div style={{ position: "absolute", inset: -15, border: "2px solid rgba(6,182,212,0.2)", borderRadius: "50%", animation: "spin 6s linear infinite" }}>
+                <div style={{ position: "absolute", top: -4, left: "50%", width: 8, height: 8, borderRadius: "50%", background: "#22d3ee", boxShadow: "0 0 10px rgba(34,211,238,0.8)" }} />
+              </div>
+            </motion.div>
+
+            {/* Text */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }} style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "clamp(36px, 8vw, 64px)", fontWeight: 900, color: "white", letterSpacing: "0.08em", textTransform: "uppercase", lineHeight: 1, marginBottom: 8 }}>
+                F1<span style={{ color: "#06b6d4" }}>Q</span>XZZ
+              </div>
+              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.3)", fontFamily: "monospace", letterSpacing: "0.1em" }}>
+                code. build. innovate.
+              </p>
+            </motion.div>
+
+            {/* Social Icons */}
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.8 }} style={{ display: "flex", gap: 20, marginTop: 20 }}>
+              {[
+                { icon: <GithubIcon size={20} />, href: "https://github.com/f1qxzz", name: "github" },
+                { icon: <DiscordIcon size={20} />, href: "https://discord.gg/M9J3ZPt7", name: "discord" },
+                { icon: <InstagramIcon size={20} />, href: "https://instagram.com/f1qxzz_", name: "instagram" },
+                { icon: <TelegramIcon size={20} />, href: "https://t.me/f1qxzz", name: "telegram" },
+              ].map((s) => (
+                <motion.a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer" onMouseEnter={() => setHoveredIcon(s.name)} onMouseLeave={() => setHoveredIcon(null)} whileHover={{ scale: 1.2, y: -3 }} whileTap={{ scale: 0.9 }} style={{ width: 40, height: 40, borderRadius: 12, background: hoveredIcon === s.name ? "rgba(6,182,212,0.15)" : "rgba(255,255,255,0.05)", border: `1px solid ${hoveredIcon === s.name ? "rgba(6,182,212,0.3)" : "rgba(255,255,255,0.08)"}`, display: "flex", alignItems: "center", justifyContent: "center", color: hoveredIcon === s.name ? "#22d3ee" : "rgba(255,255,255,0.4)", transition: "all 0.3s ease", textDecoration: "none" }}>
+                  {s.icon}
+                </motion.a>
+              ))}
+            </motion.div>
+
+            {/* Progress */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 1 }} style={{ width: 300, marginTop: 32 }}>
+              <div style={{ height: 2, background: "rgba(255,255,255,0.06)", borderRadius: 999, overflow: "hidden" }}>
+                <div style={{ height: "100%", background: "linear-gradient(90deg, #06b6d4, #8b5cf6)", borderRadius: 999, width: `${Math.min(progress, 100)}%`, transition: "width 0.5s cubic-bezier(0.4,0,0.2,1)", boxShadow: "0 0 12px rgba(6,182,212,0.5)" }} />
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 10 }}>
+                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", fontWeight: 500 }}>{loadingText}</span>
+                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", fontWeight: 600 }}>{Math.min(Math.round(progress), 100)}%</span>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
