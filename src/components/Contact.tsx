@@ -74,7 +74,7 @@ export default function Contact() {
           {/* Contact Cards */}
           <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             {[
-              { icon: <Mail size={22} />, bg: "rgba(167,139,250,0.1)", color: "#a78bfa", label: t("contact.email.label"), sub: t("contact.email.sub"), value: "tumbalfqxz@gmail.com" },
+              { icon: <Mail size={22} />, bg: "rgba(167,139,250,0.1)", color: "#a78bfa", label: t("contact.email.label"), sub: t("contact.email.sub"), value: "onlyf1qxzz@gmail.com" },
               { icon: <MapPin size={22} />, bg: "rgba(96,165,250,0.1)", color: "#60a5fa", label: t("contact.location.label"), sub: t("contact.location.sub"), value: "Klaten, Indonesia" },
               { icon: <Clock size={22} />, bg: "rgba(244,114,182,0.1)", color: "#f472b6", label: t("contact.fast.label"), sub: t("contact.fast.sub"), value: t("contact.fast.value") },
             ].map((item, i) => (
