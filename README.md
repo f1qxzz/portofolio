@@ -8,10 +8,6 @@
 
 <br />
 
-<div align="center">
-  <img src="public/hero.webp" alt="f1qxzz" width="600" style="border-radius: 12px;" />
-</div>
-
 <h1 align="center">✦ f1qxzz — Portfolio ✦</h1>
 
 <p align="center">
