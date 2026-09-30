@@ -29,6 +29,7 @@ const particles = [
 
 export default function LoadingScreen() {
   const [isVisible, setIsVisible] = useState(true);
+  const [instant, setInstant] = useState(false);
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
 
@@ -43,6 +44,7 @@ export default function LoadingScreen() {
   useEffect(() => {
     // ponytail: sekali per sesi, biar repeat visit nggak nunggu loading lagi
     if (sessionStorage.getItem("f1q-loaded")) {
+      setInstant(true);
       setIsVisible(false);
       return;
     }
@@ -67,7 +69,7 @@ export default function LoadingScreen() {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: instant ? 0 : 1.2, ease: [0.4, 0, 0.2, 1] }}
           style={{
             position: "fixed",
             inset: 0,
