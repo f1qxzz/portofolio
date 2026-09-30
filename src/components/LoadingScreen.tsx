@@ -41,17 +41,23 @@ export default function LoadingScreen() {
   }, [progress]);
 
   useEffect(() => {
+    // ponytail: sekali per sesi, biar repeat visit nggak nunggu loading lagi
+    if (sessionStorage.getItem("f1q-loaded")) {
+      setIsVisible(false);
+      return;
+    }
+    sessionStorage.setItem("f1q-loaded", "1");
     const interval = setInterval(() => {
       setProgress((prev) => {
-        const next = prev + Math.random() * 2 + 0.5;
+        const next = prev + Math.random() * 3 + 1;
         if (next >= 100) {
           clearInterval(interval);
-          setTimeout(() => setIsVisible(false), 1000);
+          setTimeout(() => setIsVisible(false), 700);
           return 100;
         }
         return next;
       });
-    }, 80);
+    }, 55);
     return () => clearInterval(interval);
   }, []);
 

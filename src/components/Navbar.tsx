@@ -129,14 +129,13 @@ export default function Navbar() {
 
       {/* Mobile Bottom Navbar - hidden on desktop */}
       <nav
-        className="md:hidden"
+        className="flex md:hidden"
         style={{
           position: "fixed",
           bottom: 16,
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 50,
-          display: "flex",
           alignItems: "center",
           justifyContent: "center",
           gap: 4,
